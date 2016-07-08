@@ -7,12 +7,19 @@ describe("helpers: assertions and modifiers;", function()
   setup(function()
     helpers.kill_all()
 
-    assert(helpers.dao.apis:insert {name = "test-1", request_host = "mockbin.com", upstream_url = "http://mockbin.com"})
-    assert(helpers.dao.apis:insert {name = "test-2", request_host = "httpbin.org", upstream_url = "http://httpbin.org"})
+    assert(helpers.dao.apis:insert {
+      name = "test-1",
+      request_host = "mockbin.com",
+      upstream_url = "http://mockbin.com"
+    })
+    assert(helpers.dao.apis:insert {
+      name = "test-2",
+      request_host = "httpbin.org",
+      upstream_url = "http://httpbin.org"
+    })
 
     assert(helpers.start_kong())
   end)
-
   teardown(function()
     helpers.stop_kong()
   end)
@@ -20,7 +27,6 @@ describe("helpers: assertions and modifiers;", function()
   before_each(function()
     client = assert(helpers.proxy_client())
   end)
-
   after_each(function()
     if client then client:close() end
   end)
@@ -79,7 +85,7 @@ describe("helpers: assertions and modifiers;", function()
         }
       })
       assert.request(r).True(true)
-    
+
       -- POST request
       local r = assert(client:send {
         method = "POST",
@@ -127,7 +133,7 @@ describe("helpers: assertions and modifiers;", function()
       assert.status(200, r)
       local body = assert.response(r).has.status(200)
       assert(cjson.decode(body))
-      
+
       local r = assert(client:send {
         method = "GET",
         path = "/status/404",
@@ -136,11 +142,11 @@ describe("helpers: assertions and modifiers;", function()
         }
       })
       assert.response(r).has.status(404)
-    end)  
+    end)
     it("fails with bad input", function()
       assert.error(function() assert.status(200, nil) end)
       assert.error(function() assert.status(200, {}) end)
-    end)  
+    end)
   end)
 
   describe("jsonbody assertion", function()
@@ -183,7 +189,7 @@ describe("helpers: assertions and modifiers;", function()
         }
       })
       assert.error(function() assert.request(r).has.jsonbody() end)
-    end)    
+    end)
   end)
 
   describe("header assertion", function()
