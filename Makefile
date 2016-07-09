@@ -22,7 +22,7 @@ dev: install
       echo $$rock already installed, skipping ; \
     fi \
 	done;
-	bin/kong config -c kong.yml -e TEST -s TEST
+	bin/kong config -c kong.yml -e TEST -s TEST -s TEST
 	bin/kong config -c kong.yml -e DEVELOPMENT -s DEVELOPMENT
 	bin/kong migrations -c $(DEVELOPMENT_CONF) up
 
